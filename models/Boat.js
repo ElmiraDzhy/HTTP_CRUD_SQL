@@ -30,7 +30,7 @@ class Boat {
     static async findByPk (pk) {
         const {rows} = await this._client.query(`SELECT *
                                                  FROM ${this._tableName}
-                                                 WHERE ${this._tableName.id} = ${Number(pk)};`);
+                                                 WHERE id = ${Number(pk)};`);
         return rows;
     }
 
