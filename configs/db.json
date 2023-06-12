@@ -1,0 +1,11 @@
+{
+  "development": {
+    "port": 5432,
+    "host": "localhost",
+    "database": "fm_boats_crud",
+    "user": "postgres",
+    "password": "3101"
+  },
+  "test": {},
+  "production": {}
+}
