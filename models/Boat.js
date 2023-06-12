@@ -44,7 +44,7 @@ class Boat {
     static async deleteByPk (pk) {
         const {rows: deleted_row} = await this._client.query(`DELETE
                                                               FROM ${this._tableName}
-                                                              WHERE ${this._tableName.id} = ${Number(pk)}
+                                                              WHERE id = ${Number(pk)}
                                                               RETURNING *;`);
         return deleted_row;
     }

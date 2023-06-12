@@ -31,3 +31,17 @@ module.exports.getBoat = async (req, res) => {
         res.status(404).send('Invalid id');
     }
 }
+
+module.exports.deleteBoat = async (req, res) => {
+    // console.log(req.params)
+    try {
+        const pk = Number(req.params.id);
+        console.log(pk)
+        if (!isNaN(pk)) {
+            const deletedBoat = await Boat.deleteByPk(pk);
+            res.status(200).send(deletedBoat);
+        }
+    } catch (err) {
+        res.status(404).send('Invalid id');
+    }
+}
