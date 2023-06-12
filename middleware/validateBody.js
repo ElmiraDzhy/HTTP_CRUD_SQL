@@ -18,7 +18,7 @@ module.exports.validateBody = async (req, res, next) => {
         console.log(req.body);
         next();
     } catch (err) {
-        res.statusCode(400).send(err.message);
+        res.status(400).send(err.message);
     }
 
 
