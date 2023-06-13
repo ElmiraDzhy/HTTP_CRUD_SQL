@@ -21,5 +21,9 @@ module.exports.validateBody = async (req, res, next) => {
         res.status(400).send(err.message);
     }
 
+}
 
+module.exports.validateUser = async(req, res, next) => {
+    //
+    next('You user is so invalid'); // express see it as an error
 }

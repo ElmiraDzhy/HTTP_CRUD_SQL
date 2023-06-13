@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = express.json();
 const app = express();
-const {validateBody} = require('./middleware/validateBody');
+const {errorHandler} = require('./errorHandler');
+const {validateBody, validateUser} = require('./middleware/validateBody');
 const BoatController = require('./controllers/Boat.controller');
 const UserController = require('./controllers/User.controller');
 
@@ -13,13 +14,15 @@ app.get('/boats/:id', BoatController.getBoat);
 app.delete('/boats/:id', BoatController.deleteBoat);
 app.put('/boats/:id', BoatController.updateBoat);
 
-app.post('/users', UserController.createUser);
+app.post('/users', validateUser, UserController.createUser);
 app.get('/users', UserController.getAllUsers);
 app.get('/users/:id', UserController.getUser);
 app.delete('/users/:id', UserController.deleteUser);
 app.put('/users/:id', UserController.updateUser);
 
 app.post('/users/:id', UserController.grabBoatForUser);
+
+app.use(errorHandler);
 
 module.exports = app;
 

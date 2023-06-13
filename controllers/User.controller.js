@@ -1,11 +1,12 @@
 const {User} = require('../models/index');
-
+const InvalidUserError = require('../errors/InvalidUserError');
 module.exports.createUser = async (req, res, next) => {
     try {
         const createdUser = await User.create(req.body);
         res.status(201).send(createdUser);
     } catch (err) {
-        res.status(400).send('Oops');
+        // res.status(400).send('Oops');
+        next(new InvalidUserError('User data is invalid'));
     }
 }
 
@@ -14,11 +15,12 @@ module.exports.getAllUsers = async (req, res, next) => {
         const allUsers = await User.findAll();
         res.status(200).send(allUsers);
     } catch (err) {
-        res.status(404).send('Oops');
+        // res.status(404).send('Oops');
+        next({message: 'User not found'});
     }
 }
 
-module.exports.getUser = async (req, res) => {
+module.exports.getUser = async (req, res, next) => {
     try {
         const pk = Number(req.params.id);
         if (!isNaN(pk)) {
@@ -26,7 +28,7 @@ module.exports.getUser = async (req, res) => {
             res.status(200).send(user);
         }
     } catch (err) {
-        res.status(404).send('Invalid id');
+        next(new InvalidUserError('User data is invalid'));
     }
 }
 
