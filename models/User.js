@@ -1,6 +1,6 @@
 class User {
     static _client = null;
-    static _tableName = 'boats';
+    static _tableName = 'users';
     static _attributes = {
         first_name: 'string',
         last_name: 'string',
@@ -22,6 +22,7 @@ class User {
         const str = `INSERT INTO ${this._tableName} (${insertSchemaAttr})
                      VALUES (${insertValuesStr})
                      RETURNING *;`;
+        console.log(str)
         const {rows} = await this._client.query(str);
         return rows;
     }
@@ -57,11 +58,11 @@ class User {
             const value = updateValues[attr];
             return `${attr} = ${typeof value === 'string' ? `'${value}'` : value}`;
         }).join(',');
-
-        const {rows} = await this._client.query(`UPDATE "${this._tableName}"
-                                                 SET ${insertValueStr}
-                                                 WHERE id = ${id}
-                                                 RETURNING *`);
+        const str = `UPDATE "${this._tableName}"
+                     SET ${insertValueStr}
+                     WHERE id = ${Number(id)}
+                     RETURNING *;`;
+        const {rows} = await this._client.query(str);
         return rows;
     }
 }
