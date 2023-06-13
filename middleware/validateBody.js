@@ -12,12 +12,20 @@ const CREATE_BOAT_SCHEMA = yup.object(
     }
 );
 
+const CREATE_USER_SCHEMA = yup.object(
+    {
+        first_name: yup.string().required(),
+        last_name: yup.string().required(),
+        email: yup.string().email().required(),
+        boat_license: yup.number(),
+    }
+);
+
 module.exports.validateBody = async (req, res, next) => {
     //req.body =  js object
     req.body.created_at = format(new Date(req.body.created_at), 'yyyy-MM-dd');
     try {
         const value = await CREATE_BOAT_SCHEMA.validate(req.body);
-        console.log(req.body);
         next();
     } catch (err) {
         res.status(400).send(err.message);
@@ -26,8 +34,13 @@ module.exports.validateBody = async (req, res, next) => {
 }
 
 module.exports.validateUser = async (req, res, next) => {
-    //
-    next('You user is so invalid'); // express see it as an error
+
+    try {
+        const value = await CREATE_USER_SCHEMA.validate(req.body);
+        next();
+    } catch (err) {
+        next('You user is invalid'); // express see it as an error
+    }
 }
 
 module.exports.isOwnerExists = async (req, res, next) => {
