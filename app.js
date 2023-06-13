@@ -3,7 +3,7 @@ const bodyParser = express.json();
 const app = express();
 const {validateBody} = require('./middleware/validateBody');
 const {createBoat, getAllBoats, getBoat, deleteBoat, updateBoat} = require('./controllers/Boat.controller');
-const {createUser, getAllUsers, getUser, deleteUser, updateUser} = require('./controllers/User.controller');
+const {createUser, getAllUsers, getUser, deleteUser, updateUser, grabBoatForUser} = require('./controllers/User.controller');
 
 app.post('/boats', bodyParser, validateBody, createBoat); //endpoint
 app.get('/boats', getAllBoats);
@@ -16,6 +16,8 @@ app.get('/users', getAllUsers);
 app.get('/users/:id', getUser);
 app.delete('/users/:id', deleteUser);
 app.put('/users/:id', bodyParser, updateUser);
+
+app.post('/users/:id', bodyParser, grabBoatForUser);
 
 module.exports = app;
 

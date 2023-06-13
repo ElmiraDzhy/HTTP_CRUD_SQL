@@ -65,6 +65,14 @@ class User {
         const {rows} = await this._client.query(str);
         return rows;
     }
+
+    static async garbBoat ({boatId, userId}) {
+        const {rows} = await this._client.query(`UPDATE boats
+                                                 SET owner_id = ${userId}
+                                                 WHERE boats.id = ${boatId}
+                                                 RETURNING *;`);
+        return rows;
+    }
 }
 
 module.exports = User;

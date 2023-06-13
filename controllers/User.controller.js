@@ -58,3 +58,13 @@ module.exports.updateUser = async (req, res) => {
 
     }
 }
+
+module.exports.grabBoatForUser = async (req, res) => {
+    console.log(req.params.id)
+    try {
+        const grabedBoat = await User.garbBoat({boatId: req.body.boat_id, userId: req.params.id});
+        res.status(200).send(grabedBoat);
+    } catch (err) {
+        res.status(404).send('Invalid id');
+    }
+}
