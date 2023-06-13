@@ -1,4 +1,6 @@
 const {Boat} = require('../models/index');
+const {User} = require('../models/User');
+const UserNotFound = require('../errors/UserNotFound');
 
 module.exports.createBoat = async (req, res, next) => {
     try {
@@ -6,7 +8,10 @@ module.exports.createBoat = async (req, res, next) => {
         res.status(201).send(createdBoat);
     } catch (err) {
         // res.status(400).send('Oops');
-        next('Boat can not be created');
+        const user = await User.findByPk(req.body.owner_id);
+        if(user.length === 0){
+            next(new UserNotFound('User Not Found'));
+        }
     }
 }
 

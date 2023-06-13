@@ -1,5 +1,7 @@
 const yup = require('yup');
 const {format} = require('date-fns');
+const User = require('../models/User');
+const UserNotFound = require("../errors/UserNotFound");
 const CREATE_BOAT_SCHEMA = yup.object(
     {
         name: yup.string().required(),
@@ -23,7 +25,22 @@ module.exports.validateBody = async (req, res, next) => {
 
 }
 
-module.exports.validateUser = async(req, res, next) => {
+module.exports.validateUser = async (req, res, next) => {
     //
     next('You user is so invalid'); // express see it as an error
+}
+
+module.exports.isOwnerExists = async (req, res, next) => {
+    try {
+        const {owner_id} = req.body;
+        if (!isNaN(owner_id)) {
+            const [user] = await User.findByPk(owner_id);
+            if (user) {
+                return next();
+            }
+        }
+        next(new UserNotFound('User Not Found'));
+    } catch (err) {
+        next(err)
+    }
 }

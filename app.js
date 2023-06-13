@@ -2,13 +2,13 @@ const express = require('express');
 const bodyParser = express.json();
 const app = express();
 const {errorHandler} = require('./errorHandler');
-const {validateBody, validateUser} = require('./middleware/validateBody');
+const {validateBody, validateUser, isOwnerExists} = require('./middleware/validateBody');
 const BoatController = require('./controllers/Boat.controller');
 const UserController = require('./controllers/User.controller');
 
 app.use(bodyParser); // will use bodyParser on each path if content-type: application/json
 
-app.post('/boats', validateBody, BoatController.createBoat); //endpoint
+app.post('/boats', isOwnerExists, validateBody, BoatController.createBoat); //endpoint
 app.get('/boats', BoatController.getAllBoats);
 app.get('/boats/:id', BoatController.getBoat);
 app.delete('/boats/:id', BoatController.deleteBoat);
