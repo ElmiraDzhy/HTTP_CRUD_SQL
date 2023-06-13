@@ -45,3 +45,18 @@ module.exports.deleteBoat = async (req, res) => {
         res.status(404).send('Invalid id');
     }
 }
+
+// ? error :
+module.exports.updateBoat = async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const updateValues = req.body;
+
+        const updatedBoat = await Boat.updateByPk({id, updateValues});
+
+        res.status(200).send(updatedBoat);
+    } catch (err) {
+        res.status(404).send('Invalid id');
+
+    }
+}

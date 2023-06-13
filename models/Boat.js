@@ -6,7 +6,8 @@ class Boat {
         is_sea_able: 'boolean',
         created_at: 'string',
         water_displacement: 'int',
-        max_speed: 'int'
+        max_speed: 'int',
+        owner_id: 'int'
     }
 
     static async create (insertValues) {
@@ -49,8 +50,21 @@ class Boat {
         return deleted_row;
     }
 
-    static async updateByPk () {
+    static async updateByPk ({id, updateValues}) {
+        const insertAttr = Object.entries(this._attributes)
+            .filter(([attr, domain]) => attr in updateValues)
+            .map(([attr]) => attr);
 
+        const insertValueStr = insertAttr.map(attr => {
+            const value = updateValues[attr];
+            return `${attr} = ${typeof value === 'string' ? `'${value}'` : value}`;
+        }).join(',');
+        const str = `UPDATE "${this._tableName}"
+                     SET ${insertValueStr}
+                     WHERE id = ${id}
+                     RETURNING *;`;
+        const {rows} = await this._client.query(str);
+        return rows;
     }
 }
 
