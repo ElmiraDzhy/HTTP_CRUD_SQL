@@ -1,5 +1,4 @@
 const {User} = require('../models/index');
-const {Boat} = require("../models");
 
 module.exports.createUser = async (req, res, next) => {
     try {
@@ -43,13 +42,10 @@ module.exports.deleteUser = async (req, res) => {
     }
 }
 
-
 module.exports.updateUser = async (req, res) => {
     try {
         const id = Number(req.params.id);
-
         const updateValues = req.body;
-
         const updatedUser = await User.updateByPk({id, updateValues});
 
         res.status(200).send(updatedUser);
@@ -60,7 +56,6 @@ module.exports.updateUser = async (req, res) => {
 }
 
 module.exports.grabBoatForUser = async (req, res) => {
-    console.log(req.params.id)
     try {
         const grabedBoat = await User.garbBoat({boatId: req.body.boat_id, userId: req.params.id});
         res.status(200).send(grabedBoat);

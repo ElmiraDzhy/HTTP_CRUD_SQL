@@ -20,3 +20,5 @@ module.exports = {
     User,
     client
 }
+
+//todo: refactor require, client links, exports

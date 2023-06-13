@@ -2,22 +2,24 @@ const express = require('express');
 const bodyParser = express.json();
 const app = express();
 const {validateBody} = require('./middleware/validateBody');
-const {createBoat, getAllBoats, getBoat, deleteBoat, updateBoat} = require('./controllers/Boat.controller');
-const {createUser, getAllUsers, getUser, deleteUser, updateUser, grabBoatForUser} = require('./controllers/User.controller');
+const BoatController = require('./controllers/Boat.controller');
+const UserController = require('./controllers/User.controller');
 
-app.post('/boats', bodyParser, validateBody, createBoat); //endpoint
-app.get('/boats', getAllBoats);
-app.get('/boats/:id', getBoat);
-app.delete('/boats/:id', deleteBoat);
-app.put('/boats/:id', bodyParser, updateBoat);
+app.use(bodyParser); // will use bodyParser on each path if content-type: application/json
 
-app.post('/users', bodyParser, createUser);
-app.get('/users', getAllUsers);
-app.get('/users/:id', getUser);
-app.delete('/users/:id', deleteUser);
-app.put('/users/:id', bodyParser, updateUser);
+app.post('/boats', validateBody, BoatController.createBoat); //endpoint
+app.get('/boats', BoatController.getAllBoats);
+app.get('/boats/:id', BoatController.getBoat);
+app.delete('/boats/:id', BoatController.deleteBoat);
+app.put('/boats/:id', BoatController.updateBoat);
 
-app.post('/users/:id', bodyParser, grabBoatForUser);
+app.post('/users', UserController.createUser);
+app.get('/users', UserController.getAllUsers);
+app.get('/users/:id', UserController.getUser);
+app.delete('/users/:id', UserController.deleteUser);
+app.put('/users/:id', UserController.updateUser);
+
+app.post('/users/:id', UserController.grabBoatForUser);
 
 module.exports = app;
 
